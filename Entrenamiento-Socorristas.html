@@ -47,10 +47,6 @@
             border-left: 5px solid #007BFF;
             border-radius: 5px;
         }
-        #objetivo option.selected {
-            background-color: #007BFF;
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -85,7 +81,7 @@
         </select>
         
         <label>Objetivo principal:</label>
-        <select id="objetivo" multiple>
+        <select id="objetivo">
             <option value="velocidad">Mejorar velocidad</option>
             <option value="resistencia">Mejorar resistencia</option>
             <option value="fuerza">Aumentar fuerza</option>
@@ -97,29 +93,14 @@
     </div>
 
     <script>
-        // Cambiar color de las opciones seleccionadas en 'Objetivo principal'
-        document.getElementById("objetivo").addEventListener("click", function(event) {
-            const option = event.target;
-            if (option.tagName === "OPTION") {
-                option.classList.toggle("selected");
-            }
-        });
-
         function generarEntrenamiento() {
             let nivel = document.getElementById("nivel").value;
             let dias = document.getElementById("dias").value;
             let horas = document.getElementById("horas").value;
             let piscina = document.getElementById("piscina").value;
             let equipamiento = document.getElementById("equipamiento").value;
-            
-            // Obtenemos los objetivos seleccionados y los almacenamos en el mismo orden
-            let objetivos = [];
-            const opcionesSeleccionadas = document.getElementById("objetivo").selectedOptions;
-            for (let option of opcionesSeleccionadas) {
-                objetivos.push(option.value);
-            }
-            
-            // Generamos el plan de entrenamiento
+            let objetivo = document.getElementById("objetivo").value;
+
             let plan = `
                 <h3>Tu Plan de Entrenamiento</h3>
                 <p><strong>Nivel:</strong> ${nivel}</p>
@@ -127,11 +108,73 @@
                 <p><strong>Horas por día:</strong> ${horas}</p>
                 <p><strong>Piscina:</strong> ${piscina}</p>
                 <p><strong>Equipamiento:</strong> ${equipamiento}</p>
-                <p><strong>Objetivos:</strong> ${objetivos.join(", ")}</p>
+                <p><strong>Objetivo:</strong> ${objetivo}</p>
                 <h4>Sesiones de Entrenamiento:</h4>
             `;
-            
-            // Mostramos el resultado en el contenedor
+
+            // Planes por objetivos
+            if (objetivo === "velocidad") {
+                plan += `
+                    <h5>Mejorar Velocidad</h5>
+                    <p><strong>Natación:</strong></p>
+                    <ul>
+                        <li><strong>Ejercicio 1:</strong> Series de velocidad (50m). 5 series a máxima velocidad, 1 minuto de descanso entre cada serie.</li>
+                        <li><strong>Ejercicio 2:</strong> Nado en intervalos. 10x25m con 30 segundos de descanso entre cada serie.</li>
+                    </ul>
+                    <p><strong>Entrenamiento de Fuerza:</strong></p>
+                    <ul>
+                        <li><strong>Ejercicio 1:</strong> Sentadillas. 3 series de 12 repeticiones.</li>
+                        <li><strong>Ejercicio 2:</strong> Flexiones de pecho. 4 series de 10 repeticiones.</li>
+                    </ul>
+                    <p><strong>Estiramientos y Recuperación:</strong> Estiramientos de piernas, espalda y hombros, 5-10 minutos de nado suave.</p>
+                `;
+            } else if (objetivo === "resistencia") {
+                plan += `
+                    <h5>Mejorar Resistencia</h5>
+                    <p><strong>Natación:</strong></p>
+                    <ul>
+                        <li><strong>Ejercicio 1:</strong> Nado continuo (400m). 4 series de 400m a ritmo moderado, 2 minutos de descanso entre cada serie.</li>
+                        <li><strong>Ejercicio 2:</strong> Nado por intervalos (200m). 8 series de 200m con 1 minuto de descanso entre cada serie.</li>
+                    </ul>
+                    <p><strong>Entrenamiento de Fuerza:</strong></p>
+                    <ul>
+                        <li><strong>Ejercicio 1:</strong> Press de banca. 3 series de 15 repeticiones.</li>
+                        <li><strong>Ejercicio 2:</strong> Dominadas. 4 series de 8 repeticiones.</li>
+                    </ul>
+                    <p><strong>Estiramientos y Recuperación:</strong> Estiramientos centrados en piernas y espalda, con una rutina de 10 minutos de relajación muscular.</p>
+                `;
+            } else if (objetivo === "fuerza") {
+                plan += `
+                    <h5>Aumentar Fuerza</h5>
+                    <p><strong>Natación:</strong></p>
+                    <ul>
+                        <li><strong>Ejercicio 1:</strong> Nado rápido (25m). 10 series de 25m a máxima velocidad, descansos de 1 minuto entre cada serie.</li>
+                        <li><strong>Ejercicio 2:</strong> Nado con aletas. 4 series de 100m con descansos de 1 minuto.</li>
+                    </ul>
+                    <p><strong>Entrenamiento de Fuerza:</strong></p>
+                    <ul>
+                        <li><strong>Ejercicio 1:</strong> Levantamiento de pesas. 3 series de 8 repeticiones.</li>
+                        <li><strong>Ejercicio 2:</strong> Abdominales. 4 series de 20 repeticiones.</li>
+                    </ul>
+                    <p><strong>Estiramientos y Recuperación:</strong> Estiramientos enfocados en abdomen y piernas, con 10 minutos de estiramientos dinámicos.</p>
+                `;
+            } else if (objetivo === "tecnica") {
+                plan += `
+                    <h5>Mejorar Técnica de Rescate</h5>
+                    <p><strong>Natación:</strong></p>
+                    <ul>
+                        <li><strong>Ejercicio 1:</strong> Nado de rescate (crol y espalda alternados). 4 series de 50m, alternando estilos.</li>
+                        <li><strong>Ejercicio 2:</strong> Rescate con maniquí. 5 series de 25m nadando con el maniquí a tu lado.</li>
+                    </ul>
+                    <p><strong>Entrenamiento de Salvamento:</strong></p>
+                    <ul>
+                        <li><strong>Ejercicio 1:</strong> Rescate en equipo. Simulacro de rescate con otros socorristas.</li>
+                        <li><strong>Ejercicio 2:</strong> Recuperación de víctima desde el agua. Simula el levantamiento y evacuación.</li>
+                    </ul>
+                    <p><strong>Estiramientos y Recuperación:</strong> Estiramientos para evitar rigidez, enfocados en hombros y espalda.</p>
+                `;
+            }
+
             document.getElementById("resultado").innerHTML = plan;
         }
     </script>
